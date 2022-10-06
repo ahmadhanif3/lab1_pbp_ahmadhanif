@@ -1,0 +1,109 @@
+<style>
+    body {
+        background-color:antiquewhite;
+    }
+
+    table {
+        border: 1px solid;
+        border-color:#f00;
+        border-collapse:collapses;
+        background-color:rgb(247, 247, 242);
+    }
+
+    table {
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    th, td {
+        padding:10px;
+        border: 1px solid;
+        border-color: #000;
+    }    
+</style>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<html>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+        <a class="navbar-brand" href="#">{{nama}}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'wishlist:logout' %}" aria-current="page">Logout</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown
+                </a>
+                <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled">Disabled</a>
+            </li>
+            </ul>
+            <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+        </div>
+    </nav>
+
+    <head>
+        <title>Hanif's Tutorial</title>
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="table">
+                <h1>My Wishlist (Ajax)</h1>
+                <br>
+                <table class="table table-bordered border-danger table-striped" id="wishlist_table">
+                    <tr>
+                        <th>Nama Barang</th>
+                        <th>Harga Barang</th>
+                        <th>Deskripsi</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <h5>Sesi terakhir login: {{ last_login }}</h5>
+        <button><a href="{% url 'wishlist:logout' %}">Logout</a></button>
+    </body>
+</html>
+
+<script type="text/javascript">
+$.ajax({
+    url: 'initial_wishlist_data.json',
+    dataType: 'json',
+    success: function(data) {
+        for (var i=0; i<data.lenght; i++) {
+            var row = $('<tr><td>' + data[i].nama_barang+ '</td><td>' + data[i].harga_barang+ '</td><td>' + data[i].deskripsi + '</td></tr>');
+            $('#wishlist_table').append(row);
+        }
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+        alert('Error: ' + textStatus + ' - ' + errorThrown);
+    }
+});
+</script>
+
+
+{% endblock content %}
